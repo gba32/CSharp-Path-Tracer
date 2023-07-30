@@ -5,13 +5,11 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSharp_Path_Tracer.Renderer
+namespace CSharp_Path_Tracer.Tracer.Objects
 {
     internal interface IObject
     {
         public Intersection Intersect(Vector3 rayOrigin, Vector3 rayDirection);
-
-        public Vector3 GetColour(Intersection intesection);
 
         public Material GetMaterial(Intersection intersection);
 

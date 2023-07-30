@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSharp_Path_Tracer.Tracer.Objects;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSharp_Path_Tracer.Renderer
+namespace CSharp_Path_Tracer.Tracer.Lights
 {
     internal class SphereLight : ILight
     {
@@ -22,24 +23,21 @@ namespace CSharp_Path_Tracer.Renderer
 
         public Intersection GenerateRandomSurfacePoint(Random random, Vector3 rayOrigin)
         {
-            float u = (float)random.NextDouble();
-            float v = (float)random.NextDouble();
+            // Cosine weighting distribution on thew surface of the sphere
+            float u = random.NextSingle();
+            float v = random.NextSingle();
 
-            float lambda = MathF.Acos(2.0f * u - 1.0f) - (MathF.PI/2.0f);
+            float lambda = MathF.Acos(2.0f * u - 1.0f) - MathF.PI / 2.0f;
             float phi = 2.0f * MathF.PI * v;
 
             float cosLambda = MathF.Cos(lambda);
             float sinLambda = MathF.Sin(lambda);
             float cosPhi = MathF.Cos(phi);
             float sinPhi = MathF.Sin(phi);
-            Vector3 initialPoint = new Vector3(Radius * cosLambda * cosPhi, Radius * cosLambda * sinPhi, Radius * sinLambda);
-
-            // Gets where the ray first hits the sphere as only the first hemisphere is considered. 
-            Vector3 ray = -Vector3.Normalize(initialPoint - rayOrigin);
-            Intersection hemisphereIntersect = Intersect(rayOrigin, ray);
-
+            Vector3 initialPoint = new Vector3(cosLambda * cosPhi, cosLambda * sinPhi, sinLambda) * Radius + Centre;
             Vector3 displacement = initialPoint - rayOrigin;
-            return new Intersection(initialPoint, Vector3.Normalize(displacement), displacement.Length());
+            Intersection intersection = Intersect(rayOrigin, Vector3.Normalize(displacement));
+            return intersection;
         }
 
         public Vector3 GetColour(Intersection intesection)
@@ -49,8 +47,7 @@ namespace CSharp_Path_Tracer.Renderer
 
         public Material GetMaterial(Intersection intersection)
         {
-            Vector3 corrected = VectorUtil.Pow(Colour / 255.0f, 2.2f);
-            return new Material(corrected, 0.2f, 0.6f, 1.0f);
+            return new Material(Colour, 0.0f, 0.0f, 1.0f);
         }
 
         public float GetSurfaceArea()
@@ -68,7 +65,7 @@ namespace CSharp_Path_Tracer.Renderer
             h = MathF.Sqrt(h);
 
             Vector3 position = rayOrigin + (-b - h) * rayDirection;
-            Vector3 normal = Vector3.Normalize(Centre - position);
+            Vector3 normal = Vector3.Normalize(position - Centre);
             return new Intersection(position, normal, -b - h);
         }
     }

@@ -5,7 +5,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSharp_Path_Tracer.Renderer
+namespace CSharp_Path_Tracer.Tracer
 {
     internal record Camera(Vector3 Position, float fov)
     {
