@@ -1,30 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using CSharp_Path_Tracer.Tracer.Rendering;
+using System;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSharp_Path_Tracer.Tracer.Objects
 {
-    internal class Box : IObject
+    internal class Box : Construction
     {
-        Vector3 Position;
-        Vector3 Dimensions;
-        Vector3 Colour;
-        public Box(Vector3 position, Vector3 dimensions, Vector3 colour)
+        protected Vector3 Position;
+        protected Vector3 Dimensions;
+        public Box(Vector3 position, Vector3 dimensions, Func<Intersection, Material> func) : base(func)
         {
             Position = position;
             Dimensions = dimensions;
-            Colour = colour;
-        }
-        public Material GetMaterial(Intersection intersection)
-        {
-            return new Material(Colour, 0.2f, 0.6f, 1.0f);
         }
 
-        public Intersection Intersect(Vector3 rayOrigin, Vector3 rayDirection)  
+        public override Intersection Intersect(Vector3 rayOrigin, Vector3 rayDirection)  
         {
             // translate box to the origin
             Vector3 translated = rayOrigin - Position;

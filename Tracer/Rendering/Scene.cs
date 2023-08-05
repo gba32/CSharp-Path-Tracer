@@ -2,10 +2,9 @@
 using CSharp_Path_Tracer.Tracer.Objects;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Numerics;
 
-namespace CSharp_Path_Tracer.Tracer
+namespace CSharp_Path_Tracer.Tracer.Rendering
 {
     internal class Scene
     {

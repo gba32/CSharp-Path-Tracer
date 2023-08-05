@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CSharp_Path_Tracer.Tracer
+namespace CSharp_Path_Tracer.Tracer.Rendering
 {
     internal static class VectorUtil
     {
@@ -25,7 +20,11 @@ namespace CSharp_Path_Tracer.Tracer
 
         public static Vector3 Pow(Vector3 v, float p)
         {
-            return new Vector3(MathF.Pow(v.X, p), MathF.Pow(v.Y, p), MathF.Pow(v.Z, p));
+            return Pow(v, p * Vector3.One);
+        }
+        public static Vector3 Pow(Vector3 v, Vector3 p)
+        {
+            return new Vector3(MathF.Pow(v.X, p.X), MathF.Pow(v.Y, p.Y), MathF.Pow(v.Z, p.Z));
         }
 
         public static Vector3 Floor(Vector3 v)

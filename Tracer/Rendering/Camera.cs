@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Numerics;
 
-namespace CSharp_Path_Tracer.Tracer
+namespace CSharp_Path_Tracer.Tracer.Rendering
 {
     internal record Camera(Vector3 Position, float fov)
     {

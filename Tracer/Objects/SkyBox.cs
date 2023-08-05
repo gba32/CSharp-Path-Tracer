@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using CSharp_Path_Tracer.Tracer.Rendering;
+using System;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSharp_Path_Tracer.Tracer.Objects
 {
     internal class SkyBox
     {
         float Size;
-        public SkyBox(float size)
+        Func<Vector3, float, Vector3> ColourFunc;
+        public SkyBox(float size, Func<Vector3, float, Vector3> func)
         {
             Size = size;
+            ColourFunc = func;
         }
 
         // modification of iquilez box intersection function
@@ -28,14 +26,14 @@ namespace CSharp_Path_Tracer.Tracer.Objects
             float tF = MathF.Min(MathF.Min(t2.X, t2.Y), t2.Z);
 
             float t = tN < 0.0f ? tN : tF;
+
             // Do not need to consider non intersecting case as the ray originates from within the box
             Vector3 intersection = rayOrigin + t * rayDirection;
 
-            float fbm = 0.5f * FBM(8.0f * intersection / Size + 8.0f * Vector3.One);
-            return new Vector3(135f, 206f, 235f)/255.0f + new Vector3(fbm);
+            return ColourFunc(intersection, Size);
         }
 
-        private float FBM(Vector3 position)
+        public static float FBM(Vector3 position)
         {
             // Rotates the position to avoid direction artifacts
             Matrix4x4 rot1 = new Matrix4x4(

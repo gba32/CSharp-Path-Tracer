@@ -1,27 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSharp_Path_Tracer.Tracer.Objects
 {
 
-    internal class Sphere : IObject
+    internal class Sphere : Construction
     {
-        private Vector3 Centre;
-        private float Radius;
-        private Vector3 Colour;
+        protected Vector3 Centre;
+        protected float Radius;
 
-        public Sphere(Vector3 centre, Vector3 colour, float radius)
+        public Sphere(Vector3 centre, float radius, Func<Intersection, Material> func) : base(func)
         {
             Centre = centre;
             Radius = radius;
-            Colour = colour;
         }
 
-        public Intersection Intersect(Vector3 rayOrigin, Vector3 rayDirection)
+        public override Intersection Intersect(Vector3 rayOrigin, Vector3 rayDirection)
         {
             Vector3 oc = rayOrigin - Centre;
             float b = Vector3.Dot(oc, rayDirection);
@@ -35,16 +29,6 @@ namespace CSharp_Path_Tracer.Tracer.Objects
             Vector3 normal = Vector3.Normalize(position - Centre);
             return new Intersection(position, normal, t);
 
-        }
-
-        public void SetPosition(Vector3 newPosition)
-        {
-            Centre = newPosition;
-        }
-
-        public Material GetMaterial(Intersection intersection)
-        {
-            return new Material(Colour, 0.2f, 0.6f, 1.0f);
         }
 
     }
